@@ -1,0 +1,29 @@
+# --- C / C++ (Compilados y ejecutables) ---
+*.out
+*.exe
+*.o
+*.obj
+*.a
+*.so
+*.dylib
+build/
+bin/
+
+# --- Java (Por si cursas Programación II o Estructuras de Datos en Java) ---
+*.class
+*.jar
+*.war
+
+# --- Python ---
+__pycache__/
+*.pyc
+
+# --- IDEs y Editores de código ---
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- Archivos de sistema operativo ---
+.DS_Store
+Thumbs.db
