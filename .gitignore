@@ -1,4 +1,4 @@
-# --- C / C++ (Compilados y ejecutables) ---
+# --- C / C++
 *.out
 *.exe
 *.o
@@ -9,7 +9,7 @@
 build/
 bin/
 
-# --- Java (Por si cursas Programación II o Estructuras de Datos en Java) ---
+# --- Java ---
 *.class
 *.jar
 *.war
@@ -18,12 +18,12 @@ bin/
 __pycache__/
 *.pyc
 
-# --- IDEs y Editores de código ---
+# --- IDEs ---
 .vscode/
 .idea/
 *.swp
 *.swo
 
-# --- Archivos de sistema operativo ---
+# --- OS generated files ---
 .DS_Store
 Thumbs.db
