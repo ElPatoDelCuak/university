@@ -10,29 +10,46 @@ float IMC_Calculator(float weight, float height) {
 
 int main (void) {
 
-    printf("Benvingut usuari, aquesta és la calculadora d'asegurances de vida desenvolupada per l'equip de Safelife.\n");
-    printf("Per sortir del programa prem Ctrl + C. \n");
+    printf("--------------------------\n"
+            "-- ASEGURANCES SAFELIFE --\n"
+            "--------------------------\n \n"
+        );
+    printf("Benvingut usuari! Aquesta és la calculadora d'asegurances de vida desenvolupada per l'equip de Safelife.\n");
+    printf("Per sortir del programa prem Ctrl + C. \n \n");
 
     
     bool running = true;
     while (running == true) {
 
-        //Get client data and validate it
-        printf("Introdueix les dades del client: ");
+        char response;
 
+        //Get client data and validate it
+        printf("Introdueix les dades del client: \n");
+
+        // Variables to store client data
         int age;
+        int capital;
         bool smoker;
         float weight;
         float height;
-        float IMC;
         int work_type;
         bool dangerous_sports;
-
-        char response;
 
         printf("Introdueix l'edat del client (18-70): ");
         while (scanf("%d", &age) != 1 || age < 18 || age > 70) {
             printf("Error: Introdueix un valor vàlid per l'edat (18-70): ");
+            while (getchar() != '\n'); // Clear input buffer
+        }   
+
+        printf("Introdueix el capital a assegurar: \n"
+                "   1 - 50.000EUR \n"
+                "   2 - 100.000EUR \n"
+                "   3 - 150.000EUR \n"
+                "   4 - 200.000EUR \n"
+                "   5 - 300.000EUR \n"
+        );
+        while (scanf("%d", &capital) != 1 || capital < 1 || capital > 5) {
+            printf("Error: Introdueix un valor vàlid per al capital a assegurar (1-5): ");
             while (getchar() != '\n'); // Clear input buffer
         }
         
@@ -60,7 +77,7 @@ int main (void) {
             while (getchar() != '\n'); // Clear input buffer
         }
         
-        IMC = IMC_Calculator(weight, height);
+        float IMC = IMC_Calculator(weight, height);
         
         printf("Introdueix el tipus de treball del client (1-3): \n");
         printf("    1 - Risc Baix: Treball d'oficina, docencia \n"
