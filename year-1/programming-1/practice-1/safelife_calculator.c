@@ -90,8 +90,17 @@ int main (void) {
                 "----------------------------------------------------------------------------------------------------------\n",
                 age, smoker ? "Sí" : "No", weight, height, work_type, dangerous_sports ? "Sí" : "No"
         );
-        printf("Son correctes les dades introduïdes? (S/N): ");
 
+        printf("Son correctes les dades introduïdes? (S/N): ");
+        while (scanf(" %c", &response) != 1 || (response != 'S' && response != 'N' && response != 's' && response != 'n')) {
+            printf("Error: Introdueix 'S' per sí o 'N' per no: ");
+            while (getchar() != '\n'); // Clear input buffer
+        }
+        if (response == 'N' || response == 'n') {
+            printf("Torna a introduir les dades del client.\n");
+            while (getchar() != '\n'); // Clear input buffer
+            continue; // Restart the loop to re-enter client data
+        }
 
         // Ask if he wants calculate another client or close the program --
         printf("Vols calcular la prima d'un altre client? (S/N): ");
