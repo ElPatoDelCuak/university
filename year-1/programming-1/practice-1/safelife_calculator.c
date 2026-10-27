@@ -1,12 +1,27 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-// Function to calculate IMC
+//--- VARIABLES ---
+// System variables
+bool running = true;
+char response;
+
+// Variables to store client data
+int age;
+int capital;
+bool smoker;
+float weight;
+float height;
+int work_type;
+bool dangerous_sports;
+
+//--- FUNCTIONS ---
 float IMC_Calculator(float weight, float height) {
     float height_m = height / 100.0; // Convert height from cm to m
     return weight / (height_m * height_m);
 }
 
+//TODO: Validate user input for integers, example: 20.5 error.
 int int_validator(int min, int max) {
     int value;
     while (scanf("%d", &value) != 1 || value < min || value > max) {
@@ -39,6 +54,7 @@ bool true_false_validator() {
     response = '\0'; // Reset response for next input
 }
 
+//--- MAIN FUNCTION ---
 int main (void) {
 
     printf("--------------------------\n"
@@ -48,23 +64,10 @@ int main (void) {
     printf("Benvingut usuari! Aquesta és la calculadora d'asegurances de vida desenvolupada per l'equip de Safelife.\n");
     printf("Per sortir del programa prem Ctrl + C. \n \n");
 
-    
-    bool running = true;
     while (running == true) {
-
-        char response;
 
         //Get client data and validate it
         printf("Introdueix les dades del client: \n");
-
-        // Variables to store client data
-        int age;
-        int capital;
-        bool smoker;
-        float weight;
-        float height;
-        int work_type;
-        bool dangerous_sports;
 
         printf("Introdueix l'edat del client (18-70): ");
         age = int_validator(18, 70);
@@ -105,13 +108,16 @@ int main (void) {
                 age, smoker ? "Sí" : "No", weight, height, work_type, dangerous_sports ? "Sí" : "No"
         );
 
-        printf("Son correctes les dades introduïdes? (S/N): ");
+        printf("Son correctes les dades introduïdes? (S/N): \n");
         if (true_false_validator() == false) {
             printf("Si us plau, torna a introduir les dades del client. \n");
             continue; // Restart the loop to re-enter client data
         }
+        
+        //TODO: Implement the insurance modalities and calculate the prize per client based on the data provided, modalities, and fractions of payment.
 
-        // Ask if he wants calculate another client or close the program --
+        //--- CLOSE PROGRAM ---
+        // Ask if the user wants to calculate for another client
         printf("Vols calcular la prima d'un altre client? (S/N): ");
         running = true_false_validator();
         if (running == false) {
