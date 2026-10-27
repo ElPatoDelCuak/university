@@ -6,6 +6,8 @@
 bool running = true;
 char response;
 
+//TODO: Implement new constants for insurance modalities and fractions of payment, base prizes per capital
+
 // Variables to store client data
 int age;
 int capital;
