@@ -7,7 +7,6 @@ float IMC_Calculator(float weight, float height) {
     return weight / (height_m * height_m);
 }
 
-
 int main (void) {
 
     printf("--------------------------\n"
