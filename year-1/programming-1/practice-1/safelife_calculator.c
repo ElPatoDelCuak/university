@@ -1,9 +1,8 @@
 #include <stdio.h>
-#include <stdbool.h>
 
 //--- VARIABLES ---
 // System variables
-bool running = true;
+int running = 1;
 char response;
 
 //TODO: Implement new constants for insurance modalities and fractions of payment, base prizes per capital
@@ -11,11 +10,11 @@ char response;
 // Variables to store client data
 int age;
 int capital;
-bool smoker;
+int smoker;
 float weight;
 float height;
 int work_type;
-bool dangerous_sports;
+int dangerous_sports;
 
 //--- FUNCTIONS ---
 float IMC_Calculator(float weight, float height) {
@@ -42,16 +41,16 @@ float float_validator(float min, float max) {
     return value;
 }
 
-bool true_false_validator() {
+int true_false_validator() {
     char response;
     while (scanf(" %c", &response) != 1 || (response != 'S' && response != 'N' && response != 's' && response != 'n')) {
         printf("Error: Introdueix 'S' per sí o 'N' per no: ");
         while (getchar() != '\n'); // Clear input buffer
     }
     if (response == 'S' || response == 's') {
-        return true;
+        return 1;
     } else if (response == 'N' || response == 'n') {
-        return false;
+        return 0;
     }
     response = '\0'; // Reset response for next input
 }
@@ -66,7 +65,7 @@ int main (void) {
     printf("Benvingut usuari! Aquesta és la calculadora d'asegurances de vida desenvolupada per l'equip de Safelife.\n");
     printf("Per sortir del programa prem Ctrl + C. \n \n");
 
-    while (running == true) {
+    while (running == 1) {
 
         //Get client data and validate it
         printf("Introdueix les dades del client: \n");
@@ -111,7 +110,7 @@ int main (void) {
         );
 
         printf("Son correctes les dades introduïdes? (S/N): \n");
-        if (true_false_validator() == false) {
+        if (true_false_validator() == 0) {
             printf("Si us plau, torna a introduir les dades del client. \n");
             continue; // Restart the loop to re-enter client data
         }
@@ -122,7 +121,7 @@ int main (void) {
         // Ask if the user wants to calculate for another client
         printf("Vols calcular la prima d'un altre client? (S/N): ");
         running = true_false_validator();
-        if (running == false) {
+        if (running == 0) {
             printf("Gràcies per utilitzar la calculadora d'asegurances de vida de Safelife. Fins aviat! \n");
         }
     }
