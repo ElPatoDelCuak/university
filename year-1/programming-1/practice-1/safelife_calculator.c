@@ -10,10 +10,10 @@ char response;
 int basic_insurance = 0;
 int extended_insurance = 30;
 int premium_insurance = 55;
-int base_prize;
+int base_rate;
 int risk_percentatge;
-int modality_percentatge = 0;
-int payment_percentatge = 0;
+
+float client_rate;
 
 // Variables to store client data
 int age;
@@ -63,12 +63,12 @@ int true_false_validator() {
 }
 
 void calculate_insurance(int age, int capital, int smoker, float IMC, int work_type, int dangerous_sports) {
-    //Base prizes per capital
-    if (capital == 1) {base_prize = 90;}
-    else if (capital == 2) {base_prize = 160;}
-    else if (capital == 3) {base_prize = 225;}
-    else if (capital == 4) {base_prize = 280;}
-    else if (capital == 5) {base_prize = 390;}
+    //Base rates per capital
+    if (capital == 1) {base_rate = 90;}
+    else if (capital == 2) {base_rate = 160;}
+    else if (capital == 3) {base_rate = 225;}
+    else if (capital == 4) {base_rate = 280;}
+    else if (capital == 5) {base_rate = 390;}
 
     // Calculate total percentatge based on client data
     if (age >= 18 && age <= 29) {risk_percentatge = -10;}
@@ -89,7 +89,45 @@ void calculate_insurance(int age, int capital, int smoker, float IMC, int work_t
 
     if (dangerous_sports == 1) {risk_percentatge += 20;}
 
-    printf("El percentatge de risc del client és: %d%% \n", risk_percentatge);
+    client_rate = base_rate * risk_percentatge / 100.0f + base_rate;
+
+    printf("\nEls preus de l'assegurança segons les dades introduïdes són els següents:\n\n");
+    printf("IMC: %.2f | Prima base: %.2f EUR | Risc total: %.2f%%\n",
+           IMC, (float)base_rate, (float)risk_percentatge);
+    printf("Prima total: %.2f EUR\n\n", client_rate);
+
+    printf("---------------------------------------------------------------------------------------------------------------------\n");
+    printf("| %-13s | %22s | %22s | %22s | %22s |\n",
+           "Modalitat", "Anual (1 rebut)", "Semestral (2 rebuts)",
+           "Trimestral (4 rebuts)", "Mensual (12 rebuts)");
+    printf("---------------------------------------------------------------------------------------------------------------------\n");
+    printf("| %-13s | %22.2f | %22.2f | %22.2f | %22.2f |\n",
+           "Basica", client_rate, client_rate * 1.03f / 2.0f,
+           client_rate * 1.05f / 4.0f, client_rate * 1.08f / 12.0f);
+    printf("---------------------------------------------------------------------------------------------------------------------\n");
+    if (age <= 65) {
+        float extended_rate = client_rate * (1.0f + extended_insurance / 100.0f);
+        printf("| %-13s | %22.2f | %22.2f | %22.2f | %22.2f |\n",
+               "Ampliada", extended_rate, extended_rate * 1.03f / 2.0f,
+               extended_rate * 1.05f / 4.0f, extended_rate * 1.08f / 12.0f);
+    } else {
+        printf("| %-13s | %22s | %22s | %22s | %22s |\n",
+               "Ampliada", "No disponible", "No disponible",
+               "No disponible", "No disponible");
+    }
+    printf("---------------------------------------------------------------------------------------------------------------------\n");
+    if (age <= 60) {
+        float premium_rate = client_rate * (1.0f + premium_insurance / 100.0f);
+        printf("| %-13s | %22.2f | %22.2f | %22.2f | %22.2f |\n",
+               "Premium", premium_rate, premium_rate * 1.03f / 2.0f,
+               premium_rate * 1.05f / 4.0f, premium_rate * 1.08f / 12.0f);
+    } else {
+        printf("| %-13s | %22s | %22s | %22s | %22s |\n",
+               "Premium", "No disponible", "No disponible",
+               "No disponible", "No disponible");
+    }
+    printf("---------------------------------------------------------------------------------------------------------------------\n");
+
 }
 
 //--- MAIN FUNCTION ---
@@ -152,7 +190,6 @@ int main (void) {
             continue; // Restart the loop to re-enter client data
         }
         
-        //TODO: Implement the insurance modalities and calculate the prize per client based on the data provided, modalities, and fractions of payment.
         calculate_insurance(age, capital, smoker, IMC, work_type, dangerous_sports);
 
 
