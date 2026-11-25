@@ -11,7 +11,7 @@ int basic_insurance = 0;
 int extended_insurance = 30;
 int premium_insurance = 55;
 int base_prize;
-int risk_percentatge = 0;
+int risk_percentatge;
 int modality_percentatge = 0;
 int payment_percentatge = 0;
 
@@ -62,32 +62,34 @@ int true_false_validator() {
     response = '\0'; // Reset response for next input
 }
 
-int calculate_insurance(int age, int capital, int smoker, float IMC, int work_type, int dangerous_sports) {
+void calculate_insurance(int age, int capital, int smoker, float IMC, int work_type, int dangerous_sports) {
     //Base prizes per capital
     if (capital == 1) {base_prize = 90;}
-    if (capital == 2) {base_prize = 160;}
-    if (capital == 3) {base_prize = 225;}
-    if (capital == 4) {base_prize = 280;}
-    if (capital == 5) {base_prize = 390;}
+    else if (capital == 2) {base_prize = 160;}
+    else if (capital == 3) {base_prize = 225;}
+    else if (capital == 4) {base_prize = 280;}
+    else if (capital == 5) {base_prize = 390;}
 
     // Calculate total percentatge based on client data
     if (age >= 18 && age <= 29) {risk_percentatge = -10;}
-    if (age >= 30 && age <= 39) {risk_percentatge = 0;}
-    if (age >= 40 && age <= 49) {risk_percentatge = 25;}
-    if (age >= 50 && age <= 59) {risk_percentatge = 60;}
-    if (age >= 60 && age <= 65) {risk_percentatge = 110;}
-    if (age >= 66 && age <= 70) {risk_percentatge = 180;}
+    else if (age >= 30 && age <= 39) {risk_percentatge = 0;}
+    else if (age >= 40 && age <= 49) {risk_percentatge = 25;}
+    else if (age >= 50 && age <= 59) {risk_percentatge = 60;}
+    else if (age >= 60 && age <= 65) {risk_percentatge = 110;}
+    else if (age >= 66 && age <= 70) {risk_percentatge = 180;}
 
     if (smoker == 1) {risk_percentatge += 45;}
 
     if (IMC < 18.5) {risk_percentatge += 15;}
-    if (IMC >= 25 && IMC < 30) {risk_percentatge += 10;}
-    if (IMC >= 30) {risk_percentatge += 30;}
+    else if (IMC >= 25 && IMC < 30) {risk_percentatge += 10;}
+    else if (IMC >= 30) {risk_percentatge += 30;}
 
     if (work_type == 2) {risk_percentatge += 15;}
-    if (work_type == 3) {risk_percentatge += 40;}
+    else if (work_type == 3) {risk_percentatge += 40;}
 
     if (dangerous_sports == 1) {risk_percentatge += 20;}
+
+    printf("El percentatge de risc del client és: %d%% \n", risk_percentatge);
 }
 
 //--- MAIN FUNCTION ---
