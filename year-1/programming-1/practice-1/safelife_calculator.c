@@ -26,8 +26,7 @@ int dangerous_sports;
 
 //--- FUNCTIONS ---
 float IMC_Calculator(float weight, float height) {
-    float height_m = height / 100.0; // Convert height from cm to m
-    return weight / (height_m * height_m);
+    return weight / (height * height);
 }
 
 //TODO: Validate user input for integers, example: 20.5 error.
@@ -86,7 +85,7 @@ int calculate_insurance(int age, int capital, int smoker, float IMC, int work_ty
     if (IMC >= 30) {risk_percentatge += 30;}
 
     if (work_type == 2) {risk_percentatge += 15;}
-    if (work_type == 3) {risk_percentatge += 45;}
+    if (work_type == 3) {risk_percentatge += 40;}
 
     if (dangerous_sports == 1) {risk_percentatge += 20;}
 }
@@ -121,11 +120,11 @@ int main (void) {
         printf("El client és fumador? (S/N): ");
         smoker = true_false_validator();
 
-        printf("Introdueix el pes del client en kg: ");
-        weight = float_validator(1, 300);
+        printf("Introdueix el pes del client en kg (30-200): ");
+        weight = float_validator(30, 200);
 
-        printf("Introduex l'alçada del client en cm: ");
-        height = float_validator(1, 300);
+        printf("Introdueix l'alçada del client en metres (1.00-2.50): ");
+        height = float_validator(1, 2.5);
         
         float IMC = IMC_Calculator(weight, height);
         
@@ -140,7 +139,7 @@ int main (void) {
 
         printf("Dades del client: \n");
         printf("----------------------------------------------------------------------------------------------------------\n"
-                "| Edat: %d | Fumador: %s | Pes: %.2f kg | Alçada: %.2f cm | Tipus de treball: %d | Esports de risc: %s |\n"
+                "| Edat: %d | Fumador: %s | Pes: %.2f kg | Alçada: %.2f m | Tipus de treball: %d | Esports de risc: %s |\n"
                 "----------------------------------------------------------------------------------------------------------\n",
                 age, smoker ? "Sí" : "No", weight, height, work_type, dangerous_sports ? "Sí" : "No"
         );
