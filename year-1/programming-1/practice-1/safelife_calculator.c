@@ -1,18 +1,15 @@
 #include <stdio.h>
-
 //--- VARIABLES ---
 // System variables
 int running = 1;
-char response;
 
-//TODO: Implement new constants for insurance modalities and fractions of payment, base prizes per capital
 // Variables to store insurance modalities and fractions of payment
-int basic_insurance = 0;
 int extended_insurance = 30;
 int premium_insurance = 55;
 int base_rate;
 int risk_percentatge;
 
+// Variable to store the final insurance rate for the client
 float client_rate;
 
 // Variables to store client data
@@ -59,7 +56,7 @@ int true_false_validator() {
     } else if (response == 'N' || response == 'n') {
         return 0;
     }
-    response = '\0'; // Reset response for next input
+    return -1; // Should never reach here
 }
 
 void calculate_insurance(int age, int capital, int smoker, float IMC, int work_type, int dangerous_sports) {
@@ -127,7 +124,6 @@ void calculate_insurance(int age, int capital, int smoker, float IMC, int work_t
                "No disponible", "No disponible");
     }
     printf("---------------------------------------------------------------------------------------------------------------------\n");
-
 }
 
 //--- MAIN FUNCTION ---
@@ -141,7 +137,6 @@ int main (void) {
     printf("Per sortir del programa prem Ctrl + C. \n \n");
 
     while (running == 1) {
-
         //Get client data and validate it
         printf("Introdueix les dades del client: \n");
 
@@ -191,7 +186,6 @@ int main (void) {
         }
         
         calculate_insurance(age, capital, smoker, IMC, work_type, dangerous_sports);
-
 
         //--- CLOSE PROGRAM ---
         // Ask if the user wants to calculate for another client
