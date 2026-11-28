@@ -1,6 +1,6 @@
 // Made by - David Juncosa Alegre
 #include <stdio.h>
-
+  
 //--- VARIABLES ---
 // System variables
 int running = 1;
