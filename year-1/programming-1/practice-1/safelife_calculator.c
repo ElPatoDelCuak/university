@@ -26,37 +26,92 @@ float IMC_Calculator(float weight, float height) {
     return weight / (height * height);
 }
 
-//TODO: Validate user input for integers, example: 20.5 error.
+//Function to clear the input buffer
+int clear_input_line(void) {
+    int character;
+    while ((character = getchar()) != '\n' && character != EOF) {}
+    return character != EOF;
+}
+
+//Function to validate integers inputs within a specified range
 int int_validator(int min, int max) {
     int value;
-    while (scanf("%d", &value) != 1 || value < min || value > max) {
+    int result;
+    int character;
+    int valid_line;
+
+    // Loop until a valid integer is entered
+    while (1) {
+        result = scanf("%d", &value);
+        if (result == EOF) {
+            return -1;
+        }
+        if (result != 1) {
+            if (!clear_input_line()) {
+                return -1;
+            }
+            printf("Error: Introdueix un valor vàlid (%d-%d): ", min, max);
+            continue;
+        }
+
+        // Check if the line contains only whitespace after the integer
+        valid_line = 1;
+        while ((character = getchar()) != '\n' && character != EOF) {
+            if (character != ' ' && character != '\t' && character != '\r' &&
+                character != '\v' && character != '\f') {
+                valid_line = 0;
+            }
+        }
+        if (character == EOF) {
+            return -1;
+        }
+        if (valid_line && value >= min && value <= max) {
+            return value;
+        }
         printf("Error: Introdueix un valor vàlid (%d-%d): ", min, max);
-        while (getchar() != '\n'); // Clear input buffer
     }
-    return value;
 }
 
+//Function to validate float inputs within a specified range
 float float_validator(float min, float max) {
     float value;
-    while (scanf("%f", &value) != 1 || value < min || value > max) {
-        printf("Error: Introdueix un valor vàlid (%.2f-%.2f): ", min, max);
-        while (getchar() != '\n'); // Clear input buffer
+    int result;
+
+    // Loop until a valid float is entered
+    while (1) {
+        result = scanf("%f", &value);
+        if (result == EOF) {
+            return -1.0f;
+        }
+        if (result != 1 || value < min || value > max) {
+            if (!clear_input_line()) {
+                return -1.0f;
+            }
+            printf("Error: Introdueix un valor vàlid (%.2f-%.2f): ", min, max);
+            continue;
+        }
+        return value;
     }
-    return value;
 }
 
-int true_false_validator() {
+//Function to validate true/false inputs
+int true_false_validator(void) {
     char response;
-    while (scanf(" %c", &response) != 1 || (response != 'S' && response != 'N' && response != 's' && response != 'n')) {
+    while (1) {
+        if (scanf(" %c", &response) == EOF) {
+            return -1;
+        }
+        if (response == 'S' || response == 's') {
+            return 1;
+        }
+        if (response == 'N' || response == 'n') {
+            return 0;
+        }
+        if (!clear_input_line()) {
+            return -1;
+        }
         printf("Error: Introdueix 'S' per sí o 'N' per no: ");
-        while (getchar() != '\n'); // Clear input buffer
     }
-    if (response == 'S' || response == 's') {
-        return 1;
-    } else if (response == 'N' || response == 'n') {
-        return 0;
-    }
-    return -1; // Should never reach here
 }
 
 void calculate_insurance(int age, int capital, int smoker, float IMC, int work_type, int dangerous_sports) {
@@ -86,8 +141,10 @@ void calculate_insurance(int age, int capital, int smoker, float IMC, int work_t
 
     if (dangerous_sports == 1) {risk_percentatge += 20;}
 
+    // Calculate the final insurance rate for the client
     client_rate = base_rate * risk_percentatge / 100.0f + base_rate;
 
+    // Display the insurance rates based on the entered data
     printf("\nEls preus de l'assegurança segons les dades introduïdes són els següents:\n\n");
     printf("IMC: %.2f | Prima base: %.2f EUR | Risc total: %.2f%%\n",
            IMC, (float)base_rate, (float)risk_percentatge);
@@ -128,6 +185,7 @@ void calculate_insurance(int age, int capital, int smoker, float IMC, int work_t
 
 //--- MAIN FUNCTION ---
 int main (void) {
+    int confirmation;
 
     printf("--------------------------\n"
             "-- ASEGURANCES SAFELIFE --\n"
@@ -142,6 +200,7 @@ int main (void) {
 
         printf("Introdueix l'edat del client (18-70): ");
         age = int_validator(18, 70);
+        if (age == -1) return 0;
 
         printf("Introdueix el capital a assegurar: \n"
                 "   1 - 50.000EUR \n"
@@ -151,15 +210,19 @@ int main (void) {
                 "   5 - 300.000EUR \n"
         );
         capital = int_validator(1, 5);
+        if (capital == -1) return 0;
 
         printf("El client és fumador? (S/N): ");
         smoker = true_false_validator();
+        if (smoker == -1) return 0;
 
         printf("Introdueix el pes del client en kg (30-200): ");
         weight = float_validator(30, 200);
+        if (weight < 0.0f) return 0;
 
         printf("Introdueix l'alçada del client en metres (1.00-2.50): ");
         height = float_validator(1, 2.5);
+        if (height < 0.0f) return 0;
         
         float IMC = IMC_Calculator(weight, height);
         
@@ -168,10 +231,13 @@ int main (void) {
                 "    2 - Risc Mitjà: Transport, indústria, manteniment  \n"
                 "    3 - Risc Alt: Construcció en altura, bombers, mineria \n");
         work_type = int_validator(1, 3);
+        if (work_type == -1) return 0;
 
         printf("El client practica esports de risc? (S/N): ");
         dangerous_sports = true_false_validator();
+        if (dangerous_sports == -1) return 0;
 
+        //--- CONFIRM CLIENT DATA ---
         printf("Dades del client: \n");
         printf("----------------------------------------------------------------------------------------------------------\n"
                 "| Edat: %d | Fumador: %s | Pes: %.2f kg | Alçada: %.2f m | Tipus de treball: %d | Esports de risc: %s |\n"
@@ -180,7 +246,9 @@ int main (void) {
         );
 
         printf("Son correctes les dades introduïdes? (S/N): \n");
-        if (true_false_validator() == 0) {
+        confirmation = true_false_validator();
+        if (confirmation == -1) return 0;
+        if (confirmation == 0) {
             printf("Si us plau, torna a introduir les dades del client. \n");
             continue; // Restart the loop to re-enter client data
         }
@@ -191,6 +259,7 @@ int main (void) {
         // Ask if the user wants to calculate for another client
         printf("Vols calcular la prima d'un altre client? (S/N): ");
         running = true_false_validator();
+        if (running == -1) return 0;
         if (running == 0) {
             printf("Gràcies per utilitzar la calculadora d'asegurances de vida de Safelife. Fins aviat! \n");
         }
